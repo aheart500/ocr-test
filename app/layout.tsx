@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import Script from "next/script";
+
+import * as PDFJS from "pdfjs-dist/build/pdf";
+import * as PDFJSWorker from "pdfjs-dist/build/pdf.worker";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,6 +18,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  PDFJS.GlobalWorkerOptions.workerSrc = PDFJSWorker;
   return (
     <html lang="en">
       <body className={inter.className}>{children}</body>

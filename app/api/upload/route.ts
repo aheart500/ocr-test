@@ -16,17 +16,22 @@ export async function POST(req: NextRequest) {
 
   const fileArrayBuffer = await file.arrayBuffer();
 
-  if (!existsSync(destinationDirPath)) {
-    fs.mkdir(destinationDirPath, { recursive: true });
+  const fileName = file.name;
+  const dirName = new Date().getTime().toString();
+  const fileDirectory = path.join(destinationDirPath, dirName);
+
+  if (!existsSync(fileDirectory)) {
+    fs.mkdir(fileDirectory, { recursive: true });
   }
-  const fileName = new Date().getTime() + file.name;
+
   await fs.writeFile(
-    path.join(destinationDirPath, fileName),
+    path.join(fileDirectory, fileName),
     Buffer.from(fileArrayBuffer)
   );
 
   return Response.json({
     fileName: fileName,
+    directoryName: dirName,
     size: file.size,
     lastModified: new Date(file.lastModified),
   });

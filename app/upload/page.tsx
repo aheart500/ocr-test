@@ -3,6 +3,7 @@ import { FormEvent, useState } from "react";
 
 export default function Home() {
   const [text, setText] = useState("");
+
   const handleUpload = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const fileInput = (e as any).target.file as HTMLInputElement;
@@ -15,12 +16,19 @@ export default function Home() {
       });
       const result = await response.text();
 
-      const convertResponse = await fetch("/api/image-to-text", {
+      const convertResponse = await fetch("/api/pdf-to-images", {
         method: "POST",
         body: result,
       });
-      const conversionResult = await convertResponse.json();
-      setText(conversionResult.fileText);
+      const conversionResult = await convertResponse.text();
+
+      const textResult = await fetch("/api/images-to-text", {
+        method: "POST",
+        body: conversionResult,
+      });
+
+      const res = await textResult.json();
+      setText(res.fileText);
     }
   };
   return (
@@ -31,10 +39,11 @@ export default function Home() {
           upload
         </button>
       </form>
+      <h1>Tesserct.js</h1>
       <textarea
         value={text}
         onChange={(e) => setText(e.target.value)}
-        className="bg-red-200 h-40 my-4"
+        className="h-80 bg-red-200"
       />
     </main>
   );
