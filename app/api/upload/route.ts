@@ -2,8 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { existsSync } from "fs";
 import fs from "fs/promises";
 import path from "path";
-
-export const destinationDirPath = path.join("upload", "content");
+import { destinationDirPath } from "@/constants";
 
 export async function POST(req: NextRequest) {
   const formData = await req.formData();

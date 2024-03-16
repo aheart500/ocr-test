@@ -1,6 +1,7 @@
+import { destinationDirPath } from "@/constants";
 import fs from "fs/promises";
 import tesseract from "node-tesseract-ocr";
-import { destinationDirPath } from "../upload/route";
+
 import path from "path";
 
 export async function POST(req: Request) {
